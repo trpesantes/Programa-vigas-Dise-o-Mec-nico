@@ -1,0 +1,63 @@
+import numpy as np
+l=float(input("Longitud: "))
+a=float(input("a: "))
+b=float(input("b: "))
+puntual=float(input("P: "))
+distribuida=int(input("Distribuida: "))
+inicio_D=input("Inicio de distribuida: ")
+fin_D=input("Fin de distribuida: ")
+disP=input("Punto de carga: ")
+reaccion1=input("Primer reaccion: ")
+reaccion2=input("Segunda reaccion: ")
+
+def distancia(punto):
+  if punto=="a": 
+    punto=a
+  elif punto=="b":
+    punto=b
+  elif punto=='0':
+    punto=0
+  else:
+    punto=l
+  return punto
+
+
+disP=distancia(disP)
+inicio_D=distancia(inicio_D)
+fin_D=distancia(fin_D)
+reaccion1=distancia(reaccion1)
+reaccion2=distancia(reaccion2)
+
+def valor(exponente,x,valor):
+  if exponente==0:
+    if x<valor:
+      return 0
+    else:
+      return 1
+  elif exponente==1:
+    if x<valor:
+      return 0
+    else:
+      return (x-valor)
+  elif exponente==2:
+    if x<valor:
+      return 0
+    else:
+      return (x-valor)**2
+
+
+R_1= valor(1,l,reaccion1)
+R_2= valor(1,l,reaccion2)
+
+if fin_D==l:
+  arreglo=0
+else:
+  arreglo=-distribuida
+ind1=-(distribuida*valor(1,l,inicio_D)+arreglo*valor(1,l,fin_D)+puntual*valor(0,l,disP))
+ind2=-((distribuida/2)*valor(2,l,inicio_D)+(arreglo/2)*valor(2,l,fin_D)+puntual*valor(1,l,disP))
+
+a=np.array([[1,1],[R_1,R_2]])
+b=np.array([ind1,ind2])
+solucion=np.linalg.solve(a,b)
+
+print(solucion)
